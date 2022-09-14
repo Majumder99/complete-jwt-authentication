@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const route = require("./routes/authRoutes");
 
 const app = express();
 
@@ -21,5 +22,6 @@ mongoose
   .catch((e) => console.log(e));
 
 //routes
-app.get("/", (req, res) => res.render("home"));
+// app.get("/api", route);
+app.use("/", route);
 app.get("/smoothies", (req, res) => res.render("smoothies"));
