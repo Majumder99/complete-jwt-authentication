@@ -5,6 +5,27 @@ const asyncHandler = require("express-async-handler");
 const handleError = (err) => {
   //err.code will use to check uniqueness
   console.log(err.message, err.code);
+  let error = {
+    email: "",
+    password: "",
+  };
+
+  if (err.code === 1100) {
+    error.email = "Email is already exits";
+    return error;
+  }
+
+  //validation errors
+  if (err.message.includes("user validation failed")) {
+    // console.log(Object.values(err.errors));
+    // The Object.values() method returns an array of a given object's own enumerable property values
+    Object.values(err.errors).forEach(({ properties }) => {
+      // console.log(e.properties);
+      error[properties.path] = properties.message;
+    });
+  }
+  // console.log(error);
+  return error;
 };
 
 module.exports.signup_get = asyncHandler(async (req, res) => {
@@ -22,8 +43,8 @@ module.exports.signup_post = asyncHandler(async (req, res) => {
     res.status(201).json(User);
   } catch (error) {
     // console.log(error);
-    handleError(error);
-    res.status(400).send({ msg: error.message });
+    const errors = handleError(error);
+    res.status(400).send({ email: errors.email, password: errors.password });
   }
   // console.log(email, password);
   // res.send("New signup");
