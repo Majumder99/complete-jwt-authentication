@@ -1,6 +1,12 @@
 const user = require("../model/User");
 const asyncHandler = require("express-async-handler");
 
+//handle errors
+const handleError = (err) => {
+  //err.code will use to check uniqueness
+  console.log(err.message, err.code);
+};
+
 module.exports.signup_get = asyncHandler(async (req, res) => {
   res.render("signup");
 });
@@ -15,7 +21,8 @@ module.exports.signup_post = asyncHandler(async (req, res) => {
     console.log(User);
     res.status(201).json(User);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    handleError(error);
     res.status(400).send({ msg: error.message });
   }
   // console.log(email, password);
