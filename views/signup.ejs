@@ -4,25 +4,49 @@
   <h2>Sign up</h2>
   <label for="email">Email</label>
   <input type="text" name="email" required />
-  <div class="email error"></div>
+  <div class="email error" id="email_error"></div>
   <label for="password">Password</label>
   <input type="password" name="password" required />
-  <div class="password error"></div>
+  <div class="password error" id="password_error"></div>
   <button>SingUp</button>
 </form>
 
 <script>
+  //get the values
   const form = document.querySelector("form");
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  const emailError = document.getElementById("email_error");
+  const passwordError = document.getElementById("password_error");
 
-    //get the values
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    emailError.textContent = " ";
+    passwordError.textContent = " ";
+    // console.log(email, password);
     const email = form.email.value;
     const password = form.password.value;
+    try {
+      const result = await fetch("/signup", {
+        method: "post",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await result.json();
+      console.log(data);
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+      }
+      if (data.user) {
+        window.location.assign("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   });
-
-  console.log(email, passsword);
 </script>
 
 <%- include('partials/footer'); -%>

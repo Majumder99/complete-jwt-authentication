@@ -1,5 +1,6 @@
 const user = require("../model/User");
 const asyncHandler = require("express-async-handler");
+const jwt = require("jsonwebtoken");
 
 //handle errors
 const handleError = (err) => {
@@ -28,6 +29,11 @@ const handleError = (err) => {
   return error;
 };
 
+const createToken = (id) => {
+  // jwt.sign(payload, secret)
+  return jwt.sign({ id }, "secretsourav99", { expiresIn: 1 * 60 });
+};
+
 module.exports.signup_get = asyncHandler(async (req, res) => {
   res.render("signup");
 });
@@ -39,12 +45,14 @@ module.exports.signup_post = asyncHandler(async (req, res) => {
       email,
       password,
     });
+    const token = createToken(User._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 600000 });
     console.log(User);
-    res.status(201).json(User);
+    res.status(201).json({ user: User._id });
   } catch (error) {
-    // console.log(error);
     const errors = handleError(error);
-    res.status(400).send({ email: errors.email, password: errors.password });
+    console.log(errors);
+    res.status(400).send({ errors });
   }
   // console.log(email, password);
   // res.send("New signup");
