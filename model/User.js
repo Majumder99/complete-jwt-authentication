@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { isEmail, isStrongPassword } = require("validator");
+const bcrypt = require("bcryptjs");
 
 const UserSchema = mongoose.Schema({
   email: {
@@ -16,6 +17,22 @@ const UserSchema = mongoose.Schema({
     minlength: [8, "Please enter minimum 8 characters"],
     validate: [isStrongPassword, "Please enter strong password"],
   },
+});
+
+//fire a function after doc saved to db
+//this is like a eventlistner which will fire after the document is saved into the database
+UserSchema.post("save", (doc, next) => {
+  console.log("new user ", doc);
+  next();
+});
+
+//fire a function before document saved to db
+//we have used function(){} because we can access to the current instance. we can't do this using arrow function
+UserSchema.pre("save", async function (next) {
+  // console.log("User about to be created", this);
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 module.exports = mongoose.model("user", UserSchema);
