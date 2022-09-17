@@ -29,18 +29,18 @@ app.use("/", route);
 app.get("/smoothies", (req, res) => res.render("smoothies"));
 
 //cookies
-app.get("/set-cookies", (req, res) => {
-  // res.setHeader("Set-Cookie", "newUser=true");
-  res.cookie("newUser", false);
-  //secure means that url must have https
-  //httpOnly means we can't access this from the frontend we can access this from the http protocol
-  // res.cookie("newCookies", true, { maxAge: 10 * 20, secure: true });
-  res.cookie("newCookises", true, { maxAge: 20 * 5, httpOnly: true });
-  res.send("You got the cookies");
-});
+// app.get("/set-cookies", (req, res) => {
+//   // res.setHeader("Set-Cookie", "newUser=true");
+//   res.cookie("newUser", false);
+//   //secure means that url must have https
+//   //httpOnly means we can't access this from the frontend we can access this from the http protocol
+//   // res.cookie("newCookies", true, { maxAge: 10 * 20, secure: true });
+//   res.cookie("newCookises", true, { maxAge: 20 * 5, httpOnly: true });
+//   res.send("You got the cookies");
+// });
 
-app.get("/read-cookies", (req, res) => {
-  const cookies = req.cookies;
-  console.log(cookies);
-  res.json(cookies);
-});
+// app.get("/read-cookies", (req, res) => {
+//   const cookies = req.cookies;
+//   console.log(cookies);
+//   res.json(cookies);
+// });
