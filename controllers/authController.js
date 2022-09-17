@@ -63,8 +63,16 @@ module.exports.login_get = asyncHandler(async (req, res) => {
 module.exports.login_post = asyncHandler(async (req, res) => {
   // console.log(req.body);
   const { email, password } = req.body;
-  console.log(email, password);
-  res.send("New login");
+  // console.log(email, password);
+  // res.send({ msg: "New login" });
+  try {
+    const result = await user.login(email, password);
+    if (result) {
+      res.status(201).json({ user: result._id });
+    }
+  } catch (error) {
+    res.status(400).json({ error });
+  }
 });
 module.exports.home_get = asyncHandler(async (req, res) => {
   res.render("home");
