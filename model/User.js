@@ -31,7 +31,7 @@ UserSchema.post("save", (doc, next) => {
 UserSchema.pre("save", async function (next) {
   // console.log("User about to be created", this);
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = bcrypt.hash(this.password, salt);
   next();
 });
 

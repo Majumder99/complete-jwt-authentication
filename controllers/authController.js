@@ -11,6 +11,18 @@ const handleError = (err) => {
     password: "",
   };
 
+  //Login error
+  //Incorrect email
+  if (err.message === "Incorrect Email") {
+    error.email = err.message;
+  }
+
+  //Incorrecet password
+  if (err.message.includes("Incorrect Password")) {
+    error.password = err.message;
+  }
+
+  //signup error
   if (err.code === 1100) {
     error.email = "Email is already exits";
     return error;
@@ -67,11 +79,12 @@ module.exports.login_post = asyncHandler(async (req, res) => {
   // res.send({ msg: "New login" });
   try {
     const result = await user.login(email, password);
-    if (result) {
-      res.status(201).json({ user: result._id });
-    }
+    const token = createToken(result._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 600000 });
+    res.status(201).json({ user: result._id });
   } catch (error) {
-    res.status(400).json({ error });
+    const errors = handleError(error);
+    res.status(400).json({ errors });
   }
 });
 module.exports.home_get = asyncHandler(async (req, res) => {

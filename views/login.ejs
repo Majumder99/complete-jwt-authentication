@@ -4,23 +4,23 @@
   <h2>Login</h2>
   <label for="email">Email</label>
   <input type="text" name="email" required />
-  <div class="email error"></div>
+  <div class="email error" id="email_error"></div>
   <label for="password">Password</label>
   <input type="password" name="password" required />
-  <div class="password error"></div>
+  <div class="password error" id="password_error"></div>
   <button>Login</button>
 </form>
 
 <script>
   const form = document.querySelector("form");
-  // const emailError = document.getElementById("email_error");
-  // const passwordError = document.getElementById("password_error");
+  const emailError = document.getElementById("email_error");
+  const passwordError = document.getElementById("password_error");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     console.log("eventlistner");
-    // emailError.textContent = " ";
-    // passwordError.textContent = " ";
+    emailError.textContent = " ";
+    passwordError.textContent = " ";
     const email = form.email.value;
     const password = form.password.value;
     try {
