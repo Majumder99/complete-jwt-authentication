@@ -90,3 +90,8 @@ module.exports.login_post = asyncHandler(async (req, res) => {
 module.exports.home_get = asyncHandler(async (req, res) => {
   res.render("home");
 });
+
+module.exports.logout_get = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/");
+});

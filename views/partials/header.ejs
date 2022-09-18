@@ -10,8 +10,13 @@
       <h1><a href="/">Ninja Smoothies</a></h1>
       <div class="navbar">
         <ul>
+          <% if(User) { %>
+          <li>Welcome<%= User.email %></li>
+          <li><a href="/logout">Logout</a></li>
+          <% }else{ %>
           <li><a href="/login">Login</a></li>
-          <li><a href="/signup">Register</a></li>
+          <li><a href="/signup" class="btn">Register</a></li>
+          <% } %>
         </ul>
       </div>
     </nav>

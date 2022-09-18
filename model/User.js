@@ -29,9 +29,11 @@ UserSchema.post("save", (doc, next) => {
 //fire a function before document saved to db
 //we have used function(){} because we can access to the current instance. we can't do this using arrow function
 UserSchema.pre("save", async function (next) {
-  // console.log("User about to be created", this);
+  console.log("User about to be created", this);
   const salt = await bcrypt.genSalt(10);
-  this.password = bcrypt.hash(this.password, salt);
+  // console.log(salt);
+  this.password = await bcrypt.hash(this.password, salt);
+  // console.log(this.password);
   next();
 });
 
